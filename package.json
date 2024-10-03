@@ -1,0 +1,118 @@
+{
+	"name": "jswyll-stm32-assistant",
+	"displayName": "STM32 Project Assistant",
+	"description": "STM32工程助手，用于生成vscode的代码浏览、调试配置。",
+	"icon": "ico.ico",
+	"version": "0.2.0",
+	"publisher": "jswyll",
+	"license": "Apache-2.0",
+	"repository": "https://github.com/jswyll/jswyll-stm32-assistant",
+	"engines": {
+		"vscode": "^1.74.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onStartupFinished"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "jswyll.stm32.config-vscode",
+				"title": "生成STM32工程的VS Code配置"
+			}
+		],
+		"configuration": [
+			{
+				"title": "C/C++ 扩展配置",
+				"properties": {
+					"jswyll-stm32-assistant.cStandard": {
+						"description": "用于 IntelliSense 的 C 语言标准的版本。",
+						"type": "string",
+						"enum": [
+							"",
+							"c89",
+							"c99",
+							"c11",
+							"c17",
+							"c23",
+							"gnu89",
+							"gnu99",
+							"gnu11",
+							"gnu17",
+							"gnu23"
+						],
+						"default": "c99"
+					},
+					"jswyll-stm32-assistant.cppStandard": {
+						"description": "用于 IntelliSense 的 C++ 语言标准的版本。",
+						"enum": [
+							"",
+							"c++98",
+							"c++03",
+							"c++11",
+							"c++14",
+							"c++17",
+							"c++20",
+							"c++23",
+							"gnu++98",
+							"gnu++03",
+							"gnu++11",
+							"gnu++14",
+							"gnu++17",
+							"gnu++20",
+							"gnu++23"
+						],
+						"default": "c++11"
+					},
+					"jswyll-stm32-assistant.lastCompilePath": {
+						"description": "上一次选择的编译器路径。",
+						"type": "string",
+						"scope": "application"
+					},
+					"jswyll-stm32-assistant.jlinkSpeed": {
+						"description": "Jlink的仿真速度，单位为KB/s。",
+						"type": "integer",
+						"default": 6000,
+						"minimum": 1,
+						"maximum": 50000
+					},
+					"jswyll-stm32-assistant.iapAppBaseAddr": {
+						"markdownDescription": "[Jswyll IAP功能](https://jswyll.com/note/iap/)的APP区起始地址，应为以0x开头的十六进制数，默认为0x08004000。",
+						"type": "string",
+						"pattern": "^0x[0-9a-fA-F]+$",
+						"default": "0x08004000"
+					}
+				}
+			}
+		]
+	},
+	"extensionDependencies": [
+		"ms-vscode.cpptools",
+		"marus25.cortex-debug"
+	],
+	"files": [
+		"LICENSE",
+		"ico.ico",
+		"out/extension.js",
+		"out/logger.js"
+	],
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"lint": "eslint \"src/**/*.ts\"",
+		"package": "vsce package -o build/jswyll-stm32-assistant.vsix",
+		"install": "code --install-extension build/jswyll-stm32-assistant.vsix",
+		"watch": "tsc -watch -p ./"
+	},
+	"devDependencies": {
+		"@types/node": "^16.18.34",
+		"@types/vscode": "^1.74.0",
+		"@typescript-eslint/eslint-plugin": "^5.42.0",
+		"@typescript-eslint/parser": "^5.42.0",
+		"eslint": "^8.26.0",
+		"typescript": "^5.1.3"
+	}
+}
