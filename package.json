@@ -3,10 +3,13 @@
 	"displayName": "STM32 Project Assistant",
 	"description": "STM32工程助手，用于生成vscode的代码浏览、调试配置。",
 	"icon": "ico.ico",
-	"version": "0.2.0",
+	"version": "0.2.4",
 	"publisher": "jswyll",
 	"license": "Apache-2.0",
-	"repository": "https://github.com/jswyll/jswyll-stm32-assistant",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jswyll/jswyll-stm32-assistant.git"
+	},
 	"engines": {
 		"vscode": "^1.74.0"
 	},
@@ -26,7 +29,7 @@
 		],
 		"configuration": [
 			{
-				"title": "C/C++ 扩展配置",
+				"title": "生成配置的默认设置",
 				"properties": {
 					"jswyll-stm32-assistant.cStandard": {
 						"description": "用于 IntelliSense 的 C 语言标准的版本。",
@@ -67,11 +70,6 @@
 						],
 						"default": "c++11"
 					},
-					"jswyll-stm32-assistant.lastCompilePath": {
-						"description": "上一次选择的编译器路径。",
-						"type": "string",
-						"scope": "application"
-					},
 					"jswyll-stm32-assistant.jlinkSpeed": {
 						"description": "Jlink的仿真速度，单位为KB/s。",
 						"type": "integer",
@@ -86,11 +84,31 @@
 						"default": "0x08004000"
 					}
 				}
+			},
+			{
+				"title": "配置选择记录",
+				"properties": {
+					"jswyll-stm32-assistant.selectedDebugger": {
+						"description": "选择的调试器类型。",
+						"type": "string"
+					},
+					"jswyll-stm32-assistant.isJlinkDirectlyDownload": {
+						"description": "选择的调试器类型为JLink时，是否调用Jlink.exe直接下载，而不是使用OpenOCD进行下载。",
+						"type": "boolean",
+						"default": false
+					},
+					"jswyll-stm32-assistant.lastCompilePath": {
+						"description": "上一次选择的编译器路径。",
+						"type": "string",
+						"scope": "application"
+					}
+				}
 			}
 		]
 	},
 	"extensionDependencies": [
 		"ms-vscode.cpptools",
+		"cschlosser.doxdocgen",
 		"marus25.cortex-debug"
 	],
 	"files": [

@@ -1,18 +1,24 @@
-# STM32工程助手
+# vscode扩展 - STM32工程助手
 
-> 本vscode扩展适用于使用STM32CubeMX生成的工程，用于生成vscode的代码浏览、调试配置。
+> 本vscode扩展适用于使用STM32CubeMX生成的工程，用于生成vscode的代码浏览、编辑、编译、下载、调试的配置。
+>
+> 作者：[jswyll](https://jswyll.com/)，文档链接：<https://jswyll.com/note/embed/jswyll-stm32-assistant/>。
 
 ## 软件特性
 
-- 生成`.vscode/c_cpp_properties.json`配置文件，便于在VSCode浏览、编辑STM32CubeMX生成的工程代码
-
-    ![figures/intellisense.png](figures/intellisense.png)
-
-- 在`Core/Src/main.c`中生成同时适用于Keil MDK和GCC编译器的重定向函数
-
 - 生成`.vscode/tasks.json`配置文件，便于按快捷键[使用GCC编译器编译、下载代码](https://jswyll.com/note/embed/stm32/#%E4%BD%BF%E7%94%A8gcc%E7%BC%96%E8%AF%91)
 
-    ![figures/tasks.gif](figures/tasks.gif)
+    ![figures/1728044695560.gif](figures/1728044695560.gif)
+
+    > **说明**
+    >
+    > 支持Jlink、CMSIS-DAP、ST-Link调试器。
+
+- 生成`.vscode/c_cpp_properties.json`配置文件，便于在VSCode浏览、编辑STM32CubeMX生成的工程代码
+
+    ![figures/1728044677028.png](figures/1728044677028.png)
+
+- 在`Core/Src/main.c`中生成同时适用于Keil MDK和GCC编译器的重定向函数
 
 - 优化Makefile类型的编译输出：
 
@@ -27,11 +33,11 @@
 
 - 生成`.vscode/launch.json`配置文件，可用于启动（快捷键F5）Cortex-Debug调试：
 
-    ![figures/cortex-debug.png](figures/cortex-debug.png)
+    ![figures/1728044711640.png](figures/1728044711640.png)
 
     > **说明**
     >
-    > 这个功能依赖Cortex-Debug扩展。
+    > 这个功能由Cortex-Debug扩展提供，本扩展仅负责生成配置文件。
 
 - 生成适用于[Jswyll IAP在线升级调试](https://jswyll.com/note/iap/)的代码
 
@@ -41,7 +47,25 @@
 
 2. 点击VSCode状态栏的`生成配置`图标按钮，根据引导，生成配置文件。
 
-    ![figures/quickstart-config.gif](figures/quickstart-config.gif)
+    ![figures/1728044722394.gif](figures/1728044722394.gif)
+
+    > **说明**
+    >
+    > 如果你使用的调试器是JLink，有两种选择：
+    >
+    > 1. 使用使用JLink驱动直接下载程序，缺点是不能调试程序，需要[安装JLink软件包](https://www.segger.com/downloads/jlink/JLink_Windows_V792_x86_64.exe)。
+    >
+    > 2. 使用[OpenOCD](https://sysprogs.com/getfile/2285/openocd-20240916.7z)下载或调试程序，需要使用[Zadig](https://github.com/pbatard/libwdi/releases/download/v1.5.1/zadig-2.9.exe)把Jlink的驱动改为winusb：
+    >
+    >     ![figures/1728185489446.gif](figures/1728185489446.gif)
+    >
+    >     修改驱动后在MDK就不能使用JLink下载了，可以使用[OpenOCD](https://sysprogs.com/getfile/2285/openocd-20240916.7z)里的UsbDriverTool.exe把驱动恢复为JLlink驱动：
+    >
+    >     ![figures/1728186644368.gif](figures/1728186644368.gif)
+
+## 已知问题
+
+- 已经生成配置后，再次生成配置时选择的串口和原来的不一样时，需要手动修改打印重定向的hal串口编号
 
 ## 实现原理
 
