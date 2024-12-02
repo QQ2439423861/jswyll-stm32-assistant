@@ -1,9 +1,9 @@
 {
 	"name": "jswyll-stm32-assistant",
 	"displayName": "STM32 Project Assistant",
-	"description": "STM32工程助手，用于生成vscode的代码浏览、调试配置。",
-	"icon": "ico.ico",
-	"version": "0.2.4",
+	"description": "STM32工程助手，用于生成vscode的代码浏览、编辑、编译、下载、调试配置。",
+	"icon": "icon.png",
+	"version": "0.3.0",
 	"publisher": "jswyll",
 	"license": "Apache-2.0",
 	"repository": {
@@ -15,6 +15,10 @@
 	},
 	"categories": [
 		"Other"
+	],
+	"keywords": [
+		"stm32",
+		"cortex-debug"
 	],
 	"activationEvents": [
 		"onStartupFinished"
@@ -88,6 +92,33 @@
 			{
 				"title": "配置选择记录",
 				"properties": {
+					"jswyll-stm32-assistant.redirectPrintf": {
+						"description": "将printf函数重定向输出到串口。",
+						"type": "boolean",
+						"default": true
+					},
+					"jswyll-stm32-assistant.redirectPrintfUartNum": {
+						"description": "重定向输出时，打印的串口号。",
+						"type": "integer",
+						"enum": [
+							1,
+							2,
+							3,
+							4,
+							5,
+							6,
+							7,
+							8,
+							9
+						],
+						"default": 1,
+						"when": "jswyll-stm32-assistant.redirectPrintf"
+					},
+					"jswyll-stm32-assistant.isUsingJswyllIap": {
+						"description": "是否使用Jswyll IAP功能。",
+						"type": "boolean",
+						"default": false
+					},
 					"jswyll-stm32-assistant.selectedDebugger": {
 						"description": "选择的调试器类型。",
 						"type": "string"
@@ -97,10 +128,25 @@
 						"type": "boolean",
 						"default": false
 					},
-					"jswyll-stm32-assistant.lastCompilePath": {
-						"description": "上一次选择的编译器路径。",
+					"jswyll-stm32-assistant.selectedInterfacet": {
+						"description": "重定向输出时，打印的串口号。",
 						"type": "string",
-						"scope": "application"
+						"enum": [
+							"SWD",
+							"JTAG"
+						],
+						"default": "SWD"
+					},
+					"jswyll-stm32-assistant.gccCompilerPath": {
+						"description": "GCC编译器路径。",
+						"type": "string"
+					},
+					"jswyll-stm32-assistant.extraCompileDirs": {
+						"description": "额外的编译目录。",
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
 					}
 				}
 			}
@@ -113,24 +159,24 @@
 	],
 	"files": [
 		"LICENSE",
-		"ico.ico",
-		"out/extension.js",
+		"icon.png",
+		"out/",
 		"out/logger.js"
 	],
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
+		"build:webview": "cd views && npm run build",
+		"compile": "npm run build:webview && tsc -p ./",
 		"lint": "eslint \"src/**/*.ts\"",
-		"package": "vsce package -o build/jswyll-stm32-assistant.vsix",
-		"install": "code --install-extension build/jswyll-stm32-assistant.vsix",
+		"package": "npm run build:webview && vsce package -o build/jswyll-stm32-assistant.vsix",
 		"watch": "tsc -watch -p ./"
 	},
 	"devDependencies": {
-		"@types/node": "^16.18.34",
 		"@types/vscode": "^1.74.0",
+		"@types/node": "^20.9.0",
 		"@typescript-eslint/eslint-plugin": "^5.42.0",
 		"@typescript-eslint/parser": "^5.42.0",
 		"eslint": "^8.26.0",
-		"typescript": "^5.1.3"
+		"typescript": "^5.6.2"
 	}
 }
