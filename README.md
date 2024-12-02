@@ -51,19 +51,19 @@
 
 3. 浏览代码；点击状态栏按钮进行编译或下载；按F5键进行调试程序……
 
-    > **说明**
-    >
-    > 如果你使用的调试器是JLink，有两种选择：
-    >
-    > 1. 使用使用JLink驱动直接下载程序，缺点是不能调试程序，需要[安装JLink软件包](https://www.segger.com/downloads/jlink/JLink_Windows_V792_x86_64.exe)。
-    >
-    > 2. 使用[OpenOCD](https://sysprogs.com/getfile/2285/openocd-20240916.7z)下载或调试程序，需要使用[Zadig](https://github.com/pbatard/libwdi/releases/download/v1.5.1/zadig-2.9.exe)把Jlink的驱动改为winusb：
-    >
-    >     ![figures/1728185489446.gif](figures/1728185489446.gif)
-    >
-    >     修改驱动后在MDK就不能使用JLink下载了，可以使用[OpenOCD](https://sysprogs.com/getfile/2285/openocd-20240916.7z)里的UsbDriverTool.exe把驱动恢复为JLlink驱动：
-    >
-    >     ![figures/1728186644368.gif](figures/1728186644368.gif)
+> **说明**
+>
+> 如果你使用的调试器是JLink，有两种选择：
+>
+> 1. 使用使用JLink驱动直接下载程序，缺点是不能调试程序，需要[安装JLink软件包](https://www.segger.com/downloads/jlinkJLink_Windows_V792_x86_64.exe)。
+>
+> 2. 使用[OpenOCD](https://sysprogs.com/getfile/2285/openocd-20240916.7z)下载或调试程序，需要使用[Zadig](https:/github.com/pbatard/libwdi/releases/download/v1.5.1/zadig-2.9.exe)把Jlink的驱动改为winusb：
+>
+>     ![figures/1728185489446.gif](figures/1728185489446.gif)
+>
+>     修改驱动后在MDK就不能使用JLink下载了，可以使用[OpenOCD](https://sysprogs.com/getfile/2285/openocd-20240916.7z里的)UsbDriverTool.exe把驱动恢复为JLlink驱动：
+>
+>     ![figures/1728186644368.gif](figures/1728186644368.gif)
 
 ## 已知问题
 

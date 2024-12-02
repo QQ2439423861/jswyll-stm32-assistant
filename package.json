@@ -3,7 +3,7 @@
 	"displayName": "STM32 Project Assistant",
 	"description": "STM32工程助手，用于生成vscode的代码浏览、编辑、编译、下载、调试配置。",
 	"icon": "icon.png",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"publisher": "jswyll",
 	"license": "Apache-2.0",
 	"repository": {
