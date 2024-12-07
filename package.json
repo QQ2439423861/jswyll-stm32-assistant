@@ -3,7 +3,7 @@
 	"displayName": "STM32 Project Assistant",
 	"description": "STM32工程助手，用于生成vscode的代码浏览、编辑、编译、下载、调试配置。",
 	"icon": "icon.png",
-	"version": "0.3.1",
+	"version": "0.4.0",
 	"publisher": "jswyll",
 	"license": "Apache-2.0",
 	"repository": {
@@ -14,29 +14,31 @@
 		"vscode": "^1.74.0"
 	},
 	"categories": [
-		"Other"
+		"Programming Languages"
 	],
 	"keywords": [
+		"embed",
 		"stm32",
 		"cortex-debug"
 	],
 	"activationEvents": [
-		"onStartupFinished"
+		"workspaceContains:**/*.ioc"
 	],
-	"main": "./out/extension.js",
+	"main": "./out/src/extension.js",
+	"l10n": "./l10n",
 	"contributes": {
 		"commands": [
 			{
-				"command": "jswyll.stm32.config-vscode",
-				"title": "生成STM32工程的VS Code配置"
+				"command": "jswyll-stm32-assistant.diagnosticRtthreadInterrupt",
+				"title": "%extension.commands.diagnosticRtthreadInterrupt%"
 			}
 		],
 		"configuration": [
 			{
-				"title": "生成配置的默认设置",
+				"title": "%extension.defaultGenerateConfig.title%",
 				"properties": {
 					"jswyll-stm32-assistant.cStandard": {
-						"description": "用于 IntelliSense 的 C 语言标准的版本。",
+						"markdownDescription": "%extension.defaultGenerateConfig.cStandard.description%",
 						"type": "string",
 						"enum": [
 							"",
@@ -51,10 +53,11 @@
 							"gnu17",
 							"gnu23"
 						],
-						"default": "c99"
+						"default": "c99",
+						"scope": "resource"
 					},
 					"jswyll-stm32-assistant.cppStandard": {
-						"description": "用于 IntelliSense 的 C++ 语言标准的版本。",
+						"markdownDescription": "%extension.defaultGenerateConfig.cppStandard.description%",
 						"enum": [
 							"",
 							"c++98",
@@ -72,33 +75,30 @@
 							"gnu++20",
 							"gnu++23"
 						],
-						"default": "c++11"
+						"default": "c++11",
+						"scope": "resource"
 					},
 					"jswyll-stm32-assistant.jlinkSpeed": {
-						"description": "Jlink的仿真速度，单位为KB/s。",
+						"markdownDescription": "%extension.defaultGenerateConfig.jlinkSpeed.description%",
 						"type": "integer",
 						"default": 6000,
 						"minimum": 1,
-						"maximum": 50000
-					},
-					"jswyll-stm32-assistant.iapAppBaseAddr": {
-						"markdownDescription": "[Jswyll IAP功能](https://jswyll.com/note/iap/)的APP区起始地址，应为以0x开头的十六进制数，默认为0x08004000。",
-						"type": "string",
-						"pattern": "^0x[0-9a-fA-F]+$",
-						"default": "0x08004000"
+						"maximum": 50000,
+						"scope": "resource"
 					}
 				}
 			},
 			{
-				"title": "配置选择记录",
+				"title": "%extension.generateConfig.title%",
 				"properties": {
 					"jswyll-stm32-assistant.redirectPrintf": {
-						"description": "将printf函数重定向输出到串口。",
+						"markdownDescription": "%extension.generateConfig.redirectPrintf.description%",
 						"type": "boolean",
-						"default": true
+						"default": true,
+						"scope": "resource"
 					},
 					"jswyll-stm32-assistant.redirectPrintfUartNum": {
-						"description": "重定向输出时，打印的串口号。",
+						"markdownDescription": "%extension.generateConfig.redirectPrintfUartNum.description%",
 						"type": "integer",
 						"enum": [
 							1,
@@ -112,71 +112,150 @@
 							9
 						],
 						"default": 1,
-						"when": "jswyll-stm32-assistant.redirectPrintf"
+						"scope": "resource"
 					},
 					"jswyll-stm32-assistant.isUsingJswyllIap": {
-						"description": "是否使用Jswyll IAP功能。",
+						"markdownDescription": "%extension.generateConfig.isUsingJswyllIap.description%",
 						"type": "boolean",
-						"default": false
+						"default": false,
+						"scope": "resource"
+					},
+					"jswyll-stm32-assistant.relocateVectorEnbale": {
+						"markdownDescription": "%extension.generateConfig.relocateVectorEnbale.description%",
+						"type": "boolean",
+						"default": false,
+						"scope": "resource"
+					},
+					"jswyll-stm32-assistant.relocateVectorAddr": {
+						"markdownDescription": "%extension.generateConfig.relocateVectorAddr.description%",
+						"type": "string",
+						"pattern": "^0x[0-9a-fA-F]+$",
+						"default": "0x08004000",
+						"scope": "resource"
 					},
 					"jswyll-stm32-assistant.selectedDebugger": {
-						"description": "选择的调试器类型。",
-						"type": "string"
+						"markdownDescription": "%extension.generateConfig.selectedDebugger.description%",
+						"type": "string",
+						"default": "STLink",
+						"scope": "resource"
 					},
 					"jswyll-stm32-assistant.isJlinkDirectlyDownload": {
-						"description": "选择的调试器类型为JLink时，是否调用Jlink.exe直接下载，而不是使用OpenOCD进行下载。",
+						"markdownDescription": "%extension.generateConfig.isJlinkDirectlyDownload.description%",
 						"type": "boolean",
-						"default": false
+						"default": false,
+						"scope": "resource"
 					},
 					"jswyll-stm32-assistant.selectedInterfacet": {
-						"description": "重定向输出时，打印的串口号。",
+						"markdownDescription": "%extension.generateConfig.selectedInterfacet.description%",
 						"type": "string",
 						"enum": [
 							"SWD",
 							"JTAG"
 						],
-						"default": "SWD"
+						"default": "SWD",
+						"scope": "resource"
 					},
 					"jswyll-stm32-assistant.gccCompilerPath": {
-						"description": "GCC编译器路径。",
-						"type": "string"
+						"markdownDescription": "%extension.generateConfig.gccCompilerPath.description%",
+						"type": "string",
+						"default": "",
+						"scope": "resource"
 					},
 					"jswyll-stm32-assistant.extraCompileDirs": {
-						"description": "额外的编译目录。",
+						"markdownDescription": "%extension.generateConfig.extraCompileDirs.description%",
 						"type": "array",
 						"items": {
 							"type": "string"
-						}
+						},
+						"default": [],
+						"scope": "resource"
+					},
+					"jswyll-stm32-assistant.gccCompilerPathLast": {
+						"markdownDescription": "%extension.generateConfig.gccCompilerPathLast.description%",
+						"type": "string",
+						"default": "",
+						"scope": "application"
+					}
+				}
+			},
+			{
+				"title": "%extension.diagnosticRtthreadInterrupt.title%",
+				"properties": {
+					"jswyll-stm32-assistant.diagnosticRtthreadInterruptAuto": {
+						"markdownDescription": "%extension.diagnosticRtthreadInterruptAuto.description%",
+						"type": "boolean",
+						"default": true,
+						"scope": "window"
+					},
+					"jswyll-stm32-assistant.diagnosticRtthreadInterruptGlobPattern": {
+						"markdownDescription": "%extension.diagnosticRtthreadInterruptGlobPattern.description%",
+						"type": "string",
+						"default": "**/stm32*_it.c",
+						"scope": "window"
+					}
+				}
+			},
+			{
+				"title": "%extension.multirootWorkspace.title%",
+				"properties": {
+					"jswyll-stm32-assistant.workspaceFolderPicked": {
+						"markdownDescription": "%extension.multirootWorkspace.workspaceFolderPicked.description%",
+						"type": "string",
+						"scope": "window"
 					}
 				}
 			}
-		]
+		],
+		"menus": {
+			"explorer/context": [
+				{
+					"when": "!explorerResourceIsFolder && resourcePath =~ /stm32.*xx_it\\.c$/",
+					"command": "jswyll-stm32-assistant.diagnosticRtthreadInterrupt"
+				}
+			]
+		}
 	},
 	"extensionDependencies": [
 		"ms-vscode.cpptools",
-		"cschlosser.doxdocgen",
 		"marus25.cortex-debug"
 	],
 	"files": [
-		"LICENSE",
+		"l10n",
+		"out/src/",
+		"out/views/",
+		"CHANGELOG.md",
 		"icon.png",
-		"out/",
-		"out/logger.js"
+		"LICENSE",
+		"package.nls.json",
+		"package.nls.zh-CN.json"
 	],
 	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"build:webview": "cd views && npm run build",
-		"compile": "npm run build:webview && tsc -p ./",
+		"dev:webview": "cd views && npm run dev",
+		"build:webview": "cd views && npm run build && cd ..",
+		"watch:webview": "cd views && npm run watch",
+		"compile": "tsc -p ./",
+		"compress": "node out/dev/compress.js",
 		"lint": "eslint \"src/**/*.ts\"",
-		"package": "npm run build:webview && vsce package -o build/jswyll-stm32-assistant.vsix",
+		"increase-publish-commit": "node out/dev/increaseVersion.js && npm run publish && node out/dev/commit.js",
+		"package": "vsce package --allow-unused-files-pattern -o build/jswyll-stm32-assistant.vsix",
+		"publish": "vsce publish --allow-unused-files-pattern",
+		"vscode:prepublish": "npm run compile && npm run build:webview && npm run compress",
 		"watch": "tsc -watch -p ./"
 	},
+	"dependencies": {
+		"minimatch": "^10.0.1"
+	},
 	"devDependencies": {
-		"@types/vscode": "^1.74.0",
+		"@rushstack/eslint-patch": "^1.8.0",
 		"@types/node": "^20.9.0",
+		"@types/vscode": "^1.74.0",
 		"@typescript-eslint/eslint-plugin": "^5.42.0",
 		"@typescript-eslint/parser": "^5.42.0",
-		"eslint": "^8.26.0",
+		"@vue/eslint-config-prettier": "^9.0.0",
+		"@vue/eslint-config-typescript": "^13.0.0",
+		"eslint": "^8.56.0",
+		"eslint-plugin-vue": "^9.23.0",
+		"terser": "^5.36.0",
 		"typescript": "^5.6.2"
 	}
 }
