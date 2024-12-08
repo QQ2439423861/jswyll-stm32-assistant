@@ -3,7 +3,7 @@
 	"displayName": "STM32 Project Assistant",
 	"description": "STM32工程助手，用于生成vscode的代码浏览、编辑、编译、下载、调试配置。",
 	"icon": "icon.png",
-	"version": "0.4.0",
+	"version": "0.4.4",
 	"publisher": "jswyll",
 	"license": "Apache-2.0",
 	"repository": {
@@ -219,16 +219,6 @@
 		"ms-vscode.cpptools",
 		"marus25.cortex-debug"
 	],
-	"files": [
-		"l10n",
-		"out/src/",
-		"out/views/",
-		"CHANGELOG.md",
-		"icon.png",
-		"LICENSE",
-		"package.nls.json",
-		"package.nls.zh-CN.json"
-	],
 	"scripts": {
 		"dev:webview": "cd views && npm run dev",
 		"build:webview": "cd views && npm run build && cd ..",
@@ -237,13 +227,10 @@
 		"compress": "node out/dev/compress.js",
 		"lint": "eslint \"src/**/*.ts\"",
 		"increase-publish-commit": "node out/dev/increaseVersion.js && npm run publish && node out/dev/commit.js",
-		"package": "vsce package --allow-unused-files-pattern -o build/jswyll-stm32-assistant.vsix",
-		"publish": "vsce publish --allow-unused-files-pattern",
+		"package": "vsce package -o build/jswyll-stm32-assistant.vsix",
+		"publish": "vsce publish",
 		"vscode:prepublish": "npm run compile && npm run build:webview && npm run compress",
 		"watch": "tsc -watch -p ./"
-	},
-	"dependencies": {
-		"minimatch": "^10.0.1"
 	},
 	"devDependencies": {
 		"@rushstack/eslint-patch": "^1.8.0",
@@ -257,5 +244,8 @@
 		"eslint-plugin-vue": "^9.23.0",
 		"terser": "^5.36.0",
 		"typescript": "^5.6.2"
+	},
+	"dependencies": {
+		"minimatch": "^10.0.1"
 	}
 }
