@@ -53,8 +53,6 @@
 
 - [多根工作区](#多根工作区)
 
-- [诊断中断函数](#诊断中断函数)是否符合RT-Thread要求
-
 - 生成适用于[jswyll-iap在线升级调试](https://jswyll.com/note/iap/)的代码
 
 > **说明**
@@ -86,41 +84,6 @@ vscode支持[多根工作区](https://code.visualstudio.com/docs/editor/multi-ro
 > 你可以点击状态栏的`子文件夹`图标，切换当前工作区文件夹：
 >
 > ![figures/1733585384445.png](figures/1733585384445.png)
-
-## 诊断中断函数
-
-使用了RT-Thread后，使用STM32CubeMX重新配置并生成代码后可能新增中断函数，你可能忘记添加调用`rt_interrupt_enter()`和`rt_interrupt_leave()`。
-
-当`stm32*_it.c`文件（例如`Core/Src/stm32f4xx_it.c`）中存在以下任意一行之一：
-
-```c
-#include <rtthread.h>
-#include "rtthread.h"
-rt_interrupt_enter();
-rt_interrupt_leave();
-```
-
-将自动对该文件发起诊断：检查是否在每个`xxx_IRQHandler`函数中调用了`rt_interrupt_enter()`和`rt_interrupt_leave()`，不符合要求时，会发出警告：
-
-![figures/1733582776719.png](figures/1733582776719.png)
-
-可以在`问题`面板中的警告上右键（或编辑器出现警告波浪线的地方点击`快速修复`），选择`添加所有缺少的调用`即可补齐该文件中的所有缺失的调用：
-
-![figures/1733582921632.png](figures/1733582921632.png)
-
-修复完成：
-
-![figures/1733583226997.png](figures/1733583226997.png)
-
-> **说明**
->
-> - 可以在本扩展的设置中：选择是否启用自动诊断；修改自动诊断的文件匹配模式。
->
->     ![figures/1733583515115.png](figures/1733583515115.png)
->
-> - 可以在文件树的文件上右键，手动触发诊断：
->
->     ![figures/1733583722163.png](figures/1733583722163.png)
 
 ================================================================================
 
@@ -181,8 +144,6 @@ English | [简体中文](#快速开始)
 
 - [Multi-root Workspaces](#multi-root-workspaces)
 
-- [Diagnose Interrupt Functions](#diagnose-interrupt-functions) to ensure they meet RT-Thread requirements
-
 - Generates code suitable for [jswyll-iap online upgrade debugging](https://jswyll.com/note/iap/)
 
 > **Note**
@@ -214,38 +175,3 @@ Subsequent operations will be based on the selected workspace folder, and relate
 > You can click the `Subfolder` icon in the status bar to switch the current workspace folder:
 >
 > ![figures/1733585384445.en.png](figures/1733585384445.en.png)
-
-## Diagnose Interrupt Functions
-
-After using RT-Thread, if you reconfigure and regenerate the code using STM32CubeMX, new interrupt functions may be added, and you might forget to add calls to `rt_interrupt_enter()` and `rt_interrupt_leave()`.
-
-When the `stm32*_it.c` file (e.g., `Core/Src/stm32f4xx_it.c`) contains any of the following lines:
-
-```c
-#include <rtthread.h>
-#include "rtthread.h"
-rt_interrupt_enter();
-rt_interrupt_leave();
-```
-
-The file will automatically be diagnosed: it checks whether each xxx_IRQHandler function calls rt_interrupt_enter() and rt_interrupt_leave(). If not, a warning will be issued:
-
-![figures/1733582776719.en.png](figures/1733582776719.en.png)
-
-You can right-click on the warning in the Problems panel (or click Quick Fix on the wavy underline in the editor) and select Add All Missing Calls to add all missing calls in the file:
-
-![figures/1733582921632.en.png](figures/1733582921632.en.png)
-
-Completion:
-
-![figures/1733583226997.en.png](figures/1733583226997.en.png)
-
-> **Note**
->
-> - In the settings of this extension, you can choose whether to enable automatic diagnosis and modify the file matching pattern for automatic diagnosis.
->
->     ![figures/1733583515115.en.png](figures/1733583515115.en.png)
->
-> - You can right-click on a file in the file tree and manually trigger the diagnosis:
->
->     ![figures/1733583722163.en.png](figures/1733583722163.en.png)

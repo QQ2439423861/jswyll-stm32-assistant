@@ -3,7 +3,7 @@
 	"displayName": "STM32 Project Assistant",
 	"description": "STM32工程助手，用于生成vscode的代码浏览、编辑、编译、下载、调试配置。",
 	"icon": "icon.png",
-	"version": "0.4.4",
+	"version": "0.4.9",
 	"publisher": "jswyll",
 	"license": "Apache-2.0",
 	"repository": {
@@ -22,17 +22,11 @@
 		"cortex-debug"
 	],
 	"activationEvents": [
-		"workspaceContains:**/*.ioc"
+		"workspaceContains:**/.mxproject"
 	],
-	"main": "./out/src/extension.js",
+	"main": "./out/main/extension.js",
 	"l10n": "./l10n",
 	"contributes": {
-		"commands": [
-			{
-				"command": "jswyll-stm32-assistant.diagnosticRtthreadInterrupt",
-				"title": "%extension.commands.diagnosticRtthreadInterrupt%"
-			}
-		],
 		"configuration": [
 			{
 				"title": "%extension.defaultGenerateConfig.title%",
@@ -177,75 +171,46 @@
 						"scope": "application"
 					}
 				}
-			},
-			{
-				"title": "%extension.diagnosticRtthreadInterrupt.title%",
-				"properties": {
-					"jswyll-stm32-assistant.diagnosticRtthreadInterruptAuto": {
-						"markdownDescription": "%extension.diagnosticRtthreadInterruptAuto.description%",
-						"type": "boolean",
-						"default": true,
-						"scope": "window"
-					},
-					"jswyll-stm32-assistant.diagnosticRtthreadInterruptGlobPattern": {
-						"markdownDescription": "%extension.diagnosticRtthreadInterruptGlobPattern.description%",
-						"type": "string",
-						"default": "**/stm32*_it.c",
-						"scope": "window"
-					}
-				}
-			},
-			{
-				"title": "%extension.multirootWorkspace.title%",
-				"properties": {
-					"jswyll-stm32-assistant.workspaceFolderPicked": {
-						"markdownDescription": "%extension.multirootWorkspace.workspaceFolderPicked.description%",
-						"type": "string",
-						"scope": "window"
-					}
-				}
 			}
-		],
-		"menus": {
-			"explorer/context": [
-				{
-					"when": "!explorerResourceIsFolder && resourcePath =~ /stm32.*xx_it\\.c$/",
-					"command": "jswyll-stm32-assistant.diagnosticRtthreadInterrupt"
-				}
-			]
-		}
+		]
 	},
 	"extensionDependencies": [
 		"ms-vscode.cpptools",
 		"marus25.cortex-debug"
 	],
 	"scripts": {
-		"dev:webview": "cd views && npm run dev",
-		"build:webview": "cd views && npm run build && cd ..",
-		"watch:webview": "cd views && npm run watch",
-		"compile": "tsc -p ./",
-		"compress": "node out/dev/compress.js",
-		"lint": "eslint \"src/**/*.ts\"",
-		"increase-publish-commit": "node out/dev/increaseVersion.js && npm run publish && node out/dev/commit.js",
+		"build:main": "tsc -p src/main/tsconfig.json",
+		"build:webview": "npm run typecheck:webview && vite build",
+		"compress": "tsx src/dev/compress.ts",
+		"dev:webview": "vite --port 5176",
+		"increase-publish-commit": "tsx src/dev/increaseVersion.ts && npm run publish && tsx src/dev/commit.ts",
 		"package": "vsce package -o build/jswyll-stm32-assistant.vsix",
 		"publish": "vsce publish",
-		"vscode:prepublish": "npm run compile && npm run build:webview && npm run compress",
-		"watch": "tsc -watch -p ./"
+		"typecheck:webview": "vue-tsc --noEmit -p src/webview/tsconfig.app.json",
+		"vscode:prepublish": "npm run build:main && npm run build:webview && npm run compress",
+		"watch:main": "tsc -watch -p src/main/tsconfig.json",
+		"watch:webview": "vite build --watch"
 	},
 	"devDependencies": {
-		"@rushstack/eslint-patch": "^1.8.0",
 		"@types/node": "^20.9.0",
 		"@types/vscode": "^1.74.0",
-		"@typescript-eslint/eslint-plugin": "^5.42.0",
-		"@typescript-eslint/parser": "^5.42.0",
-		"@vue/eslint-config-prettier": "^9.0.0",
-		"@vue/eslint-config-typescript": "^13.0.0",
-		"eslint": "^8.56.0",
-		"eslint-plugin-vue": "^9.23.0",
+		"@vitejs/plugin-vue": "^5.2.1",
+		"@vue/eslint-config-prettier": "^10.1.0",
+		"@vue/eslint-config-typescript": "^14.1.3",
+		"@vue/tsconfig": "^0.7.0",
+		"eslint": "^9.14.0",
+		"eslint-plugin-vue": "^9.30.0",
+		"marked": "^15.0.3",
+		"pinia": "^2.3.0",
+		"tdesign-icons-vue-next": "^0.3.3",
+		"tdesign-vue-next": "^1.10.4",
 		"terser": "^5.36.0",
-		"typescript": "^5.6.2"
-	},
-	"dependencies": {
-		"minimatch": "^10.0.1"
+		"tsx": "^4.19.2",
+		"typescript": "^5.6.2",
+		"vite": "^6.0.1",
+		"vue": "^3.5.13",
+		"vue-i18n": "^10.0.5",
+		"vue-tsc": "^2.1.10",
+		"xss": "^1.0.15"
 	}
 }
